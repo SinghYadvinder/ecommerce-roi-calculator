@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce ROI Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+        }
+
+        .input-field {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .input-field:focus {
+            background: #fff;
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+            outline: none;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track {
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 999px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            margin-top: -6px;
+            background: #14b8a6;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        input[type="range"]::-moz-range-track {
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 999px;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: #14b8a6;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+        .btn-primary {
+            background: #14b8a6;
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #0d9488;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #14b8a6;
+            border-radius: 10px;
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="max-w-[1600px] mx-auto p-4 lg:p-6">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-800">E-Commerce ROI Calculator</h1>
+                <p class="text-slate-500 text-sm">Calculate your store's profitability</p>
+            </div>
+            <div class="flex items-center gap-3 no-print">
+                <button onclick="resetCalculator()" class="btn-secondary px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    Reset
+                </button>
+                <select id="currencySelect" class="px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-600 focus:outline-none focus:border-teal-500">
+                    <option value="USD">$ USD</option>
+                    <option value="EUR">€ EUR</option>
+                    <option value="GBP">£ GBP</option>
+                    <option value="AED">د.إ AED</option>
+                    <option value="SAR">﷼ SAR</option>
+                    <option value="EGP">E£ EGP</option>
+                    <option value="MAD">د.م. MAD</option>
+                </select>
+                <button onclick="exportPDF()" class="btn-primary px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Export
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Layout: 25% / 75% -->
+        <div class="flex flex-col xl:flex-row gap-6">
+            <!-- Left Panel - 25% Inputs -->
+            <div class="xl:w-1/4 flex-shrink-0">
+                <div class="space-y-4 sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto custom-scrollbar pr-1">
+
+                    <!-- Traffic & Conversion -->
+                    <div class="card p-4">
+                        <h3 class="font-semibold text-slate-700 text-sm mb-4 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-md bg-teal-100 flex items-center justify-center">
+                                <svg class="w-3.5 h-3.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                            </span>
+                            Traffic & Conversion
+                        </h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-1.5">
+                                    <label class="text-xs font-medium text-slate-600">Monthly Visitors</label>
+                                    <span class="text-xs font-semibold text-teal-600" id="visitorsValue">10,000</span>
+                                </div>
+                                <input type="range" id="visitors" min="100" max="100000" value="10000" step="100">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-600 mb-1.5">Total Ad Spend</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm" id="adSpendSymbol">$</span>
+                                    <input type="number" id="adSpend" value="2000" min="0" step="100" class="w-full pl-7 pr-3 py-2 input-field rounded-lg text-sm">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1.5">
+                                    <label class="text-xs font-medium text-slate-600">Conversion Rate</label>
+                                    <span class="text-xs font-semibold text-teal-600" id="conversionValue">2.5%</span>
+                                </div>
+                                <input type="range" id="conversionRate" min="0.1" max="15" value="2.5" step="0.1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Unit Economics -->
+                    <div class="card p-4">
+                        <h3 class="font-semibold text-slate-700 text-sm mb-4 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-md bg-emerald-100 flex items-center justify-center">
+                                <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </span>
+                            Unit Economics
+                        </h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-600 mb-1.5">Selling Price</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm currency-symbol">$</span>
+                                    <input type="number" id="sellingPrice" value="49.99" min="0" step="0.01" class="w-full pl-7 pr-3 py-2 input-field rounded-lg text-sm">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-600 mb-1.5">Product Cost</label>
+                                    <div class="relative">
+                                        <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs currency-symbol">$</span>
+                                        <input type="number" id="productCost" value="15" min="0" step="0.01" class="w-full pl-6 pr-2 py-2 input-field rounded-lg text-sm">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-600 mb-1.5">Shipping</label>
+                                    <div class="relative">
+                                        <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs currency-symbol">$</span>
+                                        <input type="number" id="shippingCost" value="5" min="0" step="0.01" class="w-full pl-6 pr-2 py-2 input-field rounded-lg text-sm">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-600 mb-1.5">Fixed Costs</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm currency-symbol">$</span>
+                                    <input type="number" id="fixedCosts" value="500" min="0" step="10" class="w-full pl-7 pr-3 py-2 input-field rounded-lg text-sm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Operations -->
+                    <div class="card p-4">
+                        <h3 class="font-semibold text-slate-700 text-sm mb-4 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-md bg-sky-100 flex items-center justify-center">
+                                <svg class="w-3.5 h-3.5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                            </span>
+                            Operations
+                        </h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-1.5">
+                                    <label class="text-xs font-medium text-slate-600">Confirmation Rate</label>
+                                    <span class="text-xs font-semibold text-teal-600" id="confirmationValue">70%</span>
+                                </div>
+                                <input type="range" id="confirmationRate" min="10" max="100" value="70" step="1">
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1.5">
+                                    <label class="text-xs font-medium text-slate-600">Delivery Rate</label>
+                                    <span class="text-xs font-semibold text-teal-600" id="deliveryValue">60%</span>
+                                </div>
+                                <input type="range" id="deliveryRate" min="10" max="100" value="60" step="1">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right Panel - 75% Results -->
+            <div class="xl:w-3/4">
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+                    <div class="card p-4 text-center">
+                        <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Net Profit</div>
+                        <div class="text-2xl font-bold text-emerald-600" id="netProfit">$0.00</div>
+                        <div class="text-xs text-slate-400 mt-1"><span id="profitMargin">0%</span> Margin</div>
+                    </div>
+                    <div class="card p-4 text-center">
+                        <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">ROI</div>
+                        <div class="text-2xl font-bold text-sky-600" id="roiValue">0%</div>
+                        <div class="text-xs text-slate-400 mt-1">Return on Investment</div>
+                    </div>
+                    <div class="card p-4 text-center">
+                        <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">ROAS</div>
+                        <div class="text-2xl font-bold text-teal-600" id="roasValue">0x</div>
+                        <div class="text-xs text-slate-400 mt-1">Ad Spend Return</div>
+                    </div>
+                    <div class="card p-4 text-center">
+                        <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Orders</div>
+                        <div class="text-2xl font-bold text-amber-600" id="successfulOrders">0</div>
+                        <div class="text-xs text-slate-400 mt-1">From <span id="initialOrders">0</span> initial</div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-5">
+                    <!-- Financial Chart -->
+                    <div class="lg:col-span-3 card p-4">
+                        <h3 class="font-semibold text-slate-700 text-sm mb-4">Financial Overview</h3>
+                        <div class="h-48">
+                            <canvas id="financialChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Cost Distribution -->
+                    <div class="lg:col-span-2 card p-4">
+                        <h3 class="font-semibold text-slate-700 text-sm mb-4">Where Money Goes?</h3>
+                        <div class="h-36">
+                            <canvas id="distributionChart"></canvas>
+                        </div>
+                        <div class="text-center mt-3 pt-3 border-t border-slate-100">
+                            <span class="text-xs text-slate-500">Total Costs</span>
+                            <div class="text-lg font-bold text-rose-600" id="totalCostsDisplay">$0.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Section -->
+                <div class="card p-4 mb-5">
+                    <h3 class="font-semibold text-slate-700 text-sm mb-4">Analysis</h3>
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+                        <div class="bg-teal-50 rounded-lg p-3 text-center">
+                            <div class="text-xs text-slate-500 mb-1">Break-Even Sales</div>
+                            <div class="text-lg font-bold text-teal-600" id="breakEvenSales">0</div>
+                        </div>
+                        <div class="bg-sky-50 rounded-lg p-3 text-center">
+                            <div class="text-xs text-slate-500 mb-1">Break-Even ROAS</div>
+                            <div class="text-lg font-bold text-sky-600" id="breakEvenRoas">0x</div>
+                        </div>
+                        <div class="bg-emerald-50 rounded-lg p-3 text-center">
+                            <div class="text-xs text-slate-500 mb-1">Revenue</div>
+                            <div class="text-lg font-bold text-emerald-600" id="revenueValue">$0.00</div>
+                        </div>
+                        <div class="bg-rose-50 rounded-lg p-3 text-center">
+                            <div class="text-xs text-slate-500 mb-1">Cost Per Order</div>
+                            <div class="text-lg font-bold text-rose-600" id="costPerOrder">$0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-4">
+                        <h4 class="text-xs font-medium text-slate-600 mb-3">Sensitivity Analysis</h4>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                                <span class="text-xs text-slate-600">If conversion +0.5%:</span>
+                                <span class="text-sm font-bold text-emerald-600" id="sensitivityConversion">+$0.00</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                                <span class="text-xs text-slate-600">If price +10%:</span>
+                                <span class="text-sm font-bold text-sky-600" id="sensitivityPrice">+$0.00</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                                <span class="text-xs text-slate-600">If cost -5%:</span>
+                                <span class="text-sm font-bold text-teal-600" id="sensitivityCost">+$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendation -->
+                <div class="card p-4 border-l-4 border-teal-500">
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-700 text-sm mb-1">Recommendation</h4>
+                            <p class="text-sm text-slate-600" id="recommendation">Based on your metrics, adjust your inputs to see personalized recommendations.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

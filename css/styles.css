@@ -1,0 +1,246 @@
+/* Base styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background: #f8fafc;
+    min-height: 100vh;
+    color: #1e293b;
+}
+
+/* Gradient text - teal theme */
+.gradient-text {
+    background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Section blocks styling */
+.section-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.section-block:hover {
+    box-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+/* Section headers - teal theme */
+.section-header-traffic {
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.08) 0%, rgba(13, 148, 136, 0.05) 100%);
+    border-bottom: 1px solid rgba(20, 184, 166, 0.15);
+}
+
+.section-header-economics {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(5, 150, 105, 0.05) 100%);
+    border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+.section-header-operations {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(2, 132, 199, 0.05) 100%);
+    border-bottom: 1px solid rgba(14, 165, 233, 0.15);
+}
+
+/* Range slider - teal theme */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    width: 100%;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 9999px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    margin-top: -6px;
+    background: linear-gradient(135deg, #14b8a6, #0d9488);
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(20, 184, 166, 0.4);
+    transition: all 0.2s ease;
+    border: 2px solid #fff;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.5);
+}
+
+input[type="range"]::-moz-range-track {
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 9999px;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(135deg, #14b8a6, #0d9488);
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(20, 184, 166, 0.4);
+}
+
+/* Metric cards */
+.metric-card {
+    transition: all 0.3s ease;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.08);
+}
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #14b8a6, #0d9488);
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #0d9488, #0f766e);
+}
+
+/* Input styling - clean */
+.input-light {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #1e293b;
+    transition: all 0.2s ease;
+}
+
+.input-light:focus {
+    background: #ffffff;
+    border-color: #14b8a6;
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+    outline: none;
+}
+
+.input-light::placeholder {
+    color: #94a3b8;
+}
+
+/* Badge styles - teal theme */
+.badge-blue {
+    background: rgba(20, 184, 166, 0.1);
+    border: 1px solid rgba(20, 184, 166, 0.2);
+    color: #0d9488;
+}
+
+.badge-green {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    color: #059669;
+}
+
+.badge-orange {
+    background: rgba(14, 165, 233, 0.1);
+    border: 1px solid rgba(14, 165, 233, 0.2);
+    color: #0284c7;
+}
+
+.badge-purple {
+    background: rgba(20, 184, 166, 0.1);
+    border: 1px solid rgba(20, 184, 166, 0.2);
+    color: #0d9488;
+}
+
+/* KPI value styling */
+.kpi-value {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.kpi-positive {
+    color: #10b981;
+}
+
+.kpi-negative {
+    color: #ef4444;
+}
+
+.kpi-neutral {
+    color: #0ea5e9;
+}
+
+/* Info box */
+.info-box {
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.05) 0%, rgba(13, 148, 136, 0.03) 100%);
+    border: 1px solid rgba(20, 184, 166, 0.15);
+}
+
+/* Icon backgrounds - teal theme */
+.icon-bg-primary {
+    background: rgba(20, 184, 166, 0.1);
+}
+
+.icon-text-primary {
+    color: #0d9488;
+}
+
+/* Profit indicator bars */
+.profit-bar-positive {
+    background: linear-gradient(90deg, #10b981, #059669);
+}
+
+.profit-bar-negative {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* Chart container */
+.chart-container {
+    position: relative;
+}
+
+/* Sensitivity cards */
+.sensitivity-card {
+    transition: all 0.2s ease;
+}
+
+.sensitivity-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Focus ring for accessibility */
+*:focus-visible {
+    outline: 2px solid #14b8a6;
+    outline-offset: 2px;
+}
+
+/* Smooth animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
