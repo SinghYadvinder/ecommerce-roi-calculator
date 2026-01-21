@@ -85,8 +85,10 @@ function initCharts() {
             datasets: [{
                 data: [0, 0, 0],
                 backgroundColor: ['#0ea5e9', '#ef4444', '#10b981'],
-                borderRadius: 6,
+                borderRadius: 4,
                 borderSkipped: false,
+                barThickness: 32,
+                maxBarThickness: 40
             }]
         },
         options: {
