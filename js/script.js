@@ -85,8 +85,12 @@ function initCharts() {
             datasets: [{
                 data: [0, 0, 0],
                 backgroundColor: ['#0ea5e9', '#ef4444', '#10b981'],
-                borderRadius: 4,
-                borderSkipped: false,
+                borderRadius: {
+                    topLeft: 4,
+                    topRight: 4,
+                    bottomLeft: 0,
+                    bottomRight: 0
+                },
                 barThickness: 32,
                 maxBarThickness: 40
             }]
@@ -94,6 +98,9 @@ function initCharts() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            animation: {
+                duration: 0
+            },
             plugins: {
                 legend: { display: false },
                 tooltip: {
@@ -139,6 +146,9 @@ function initCharts() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            animation: {
+                duration: 0
+            },
             plugins: {
                 legend: {
                     position: 'right',
