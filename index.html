@@ -99,6 +99,32 @@
             background: #e2e8f0;
         }
 
+        .kpi-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.1);
+        }
+
+        .kpi-curve {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .kpi-card:hover .kpi-curve {
+            transform: scale(1.4) translate(8px, -8px);
+            opacity: 0.8;
+        }
+
+        .kpi-value {
+            transition: transform 0.3s ease;
+        }
+
+        .kpi-card:hover .kpi-value {
+            transform: scale(1.05);
+        }
+
         .custom-scrollbar::-webkit-scrollbar {
             width: 4px;
         }
@@ -263,26 +289,33 @@
             <!-- Right Panel - 75% Results -->
             <div class="xl:w-3/4">
                 <!-- KPI Cards -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
-                    <div class="card p-4 text-center">
-                        <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Net Profit</div>
-                        <div class="text-2xl font-bold text-emerald-600" id="netProfit">$0.00</div>
-                        <div class="text-xs text-slate-400 mt-1"><span id="profitMargin">0%</span> Margin</div>
+                <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-5">
+                    <div class="card kpi-card p-4 text-center relative overflow-hidden cursor-pointer">
+                        <div class="kpi-curve absolute -top-10 -right-10 w-28 h-28 bg-gradient-to-br from-teal-300/50 to-cyan-400/40 rounded-full blur-md"></div>
+                        <div class="kpi-curve absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-teal-200/30 to-emerald-300/20 rounded-full blur-sm"></div>
+                        <div class="relative z-10">
+                            <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Net Profit</div>
+                            <div class="text-2xl font-bold text-emerald-600 kpi-value" id="netProfit">$0.00</div>
+                            <div class="text-xs text-slate-400 mt-1"><span id="profitMargin" class="font-semibold text-teal-600">0%</span> Margin</div>
+                        </div>
                     </div>
-                    <div class="card p-4 text-center">
-                        <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">ROI</div>
-                        <div class="text-2xl font-bold text-sky-600" id="roiValue">0%</div>
-                        <div class="text-xs text-slate-400 mt-1">Return on Investment</div>
+                    <div class="card kpi-card p-4 text-center relative overflow-hidden cursor-pointer">
+                        <div class="kpi-curve absolute -top-10 -right-10 w-28 h-28 bg-gradient-to-br from-sky-300/50 to-blue-400/40 rounded-full blur-md"></div>
+                        <div class="kpi-curve absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-sky-200/30 to-indigo-300/20 rounded-full blur-sm"></div>
+                        <div class="relative z-10">
+                            <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">ROI</div>
+                            <div class="text-2xl font-bold text-sky-600 kpi-value" id="roiValue">0%</div>
+                            <div class="text-xs text-slate-400 mt-1"><span id="roasValue" class="font-semibold text-slate-700">0x</span> ROAS</div>
+                        </div>
                     </div>
-                    <div class="card p-4 text-center">
-                        <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">ROAS</div>
-                        <div class="text-2xl font-bold text-teal-600" id="roasValue">0x</div>
-                        <div class="text-xs text-slate-400 mt-1">Ad Spend Return</div>
-                    </div>
-                    <div class="card p-4 text-center">
-                        <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Orders</div>
-                        <div class="text-2xl font-bold text-amber-600" id="successfulOrders">0</div>
-                        <div class="text-xs text-slate-400 mt-1">From <span id="initialOrders">0</span> initial</div>
+                    <div class="card kpi-card p-4 text-center relative overflow-hidden cursor-pointer">
+                        <div class="kpi-curve absolute -top-10 -right-10 w-28 h-28 bg-gradient-to-br from-amber-300/50 to-orange-400/40 rounded-full blur-md"></div>
+                        <div class="kpi-curve absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-amber-200/30 to-yellow-300/20 rounded-full blur-sm"></div>
+                        <div class="relative z-10">
+                            <div class="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Orders</div>
+                            <div class="text-2xl font-bold text-amber-600 kpi-value" id="successfulOrders">0</div>
+                            <div class="text-xs text-slate-400 mt-1">From <span id="initialOrders">0</span> initial</div>
+                        </div>
                     </div>
                 </div>
 

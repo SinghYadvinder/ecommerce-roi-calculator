@@ -187,8 +187,6 @@ function formatCurrency(value, compact = false) {
 }
 
 function calculateAll() {
-    const symbol = currencies[currentCurrency].symbol;
-
     // Get input values
     const visitors = parseFloat(document.getElementById('visitors').value);
     const adSpend = parseFloat(document.getElementById('adSpend').value) || 0;
@@ -212,7 +210,7 @@ function calculateAll() {
     const totalCosts = totalProductCost + totalShippingCost + adSpend + fixedCosts;
     const netProfit = revenue - totalCosts;
     const profitMargin = revenue > 0 ? (netProfit / revenue) * 100 : 0;
-    const roi = adSpend > 0 ? ((netProfit / adSpend) * 100) : 0;
+    const roi = totalCosts > 0 ? ((netProfit / totalCosts) * 100) : 0;
     const roas = adSpend > 0 ? (revenue / adSpend) : 0;
     const costPerOrder = successfulOrders > 0 ? totalCosts / successfulOrders : 0;
 
